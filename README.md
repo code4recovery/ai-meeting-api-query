@@ -1,5 +1,5 @@
 # ai-meeting-api-query
-Python3 app able to utilize AI VectorStores to produce json output & meeting query results to get query requests of keyword, lat, lon, and radius.
+Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries, and API queries to produce json output & meeting query results to get query requests of keyword, lat, lon, and radius.
 
 Requires:
 -linux webserver
