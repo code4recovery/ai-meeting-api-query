@@ -44,9 +44,9 @@ def haversine_distance(lat1, lon1, lat2, lon2):
     except:
         return 999999
 
-def _generate_conversational_summary(query, results):
+def _generate_conversational_summary(query, results, radius_miles=15):
     if not results:
-        return "No meetings found within 20 miles."
+        return f"No meetings found within {radius_miles} miles."
     if not client:
         return f"Found {len(results)} local meetings."
     try:
@@ -76,12 +76,12 @@ def get_answer(data):
         question = str(data.get('question', '')).lower()
         user_lat = data.get('latitude')
         user_lon = data.get('longitude')
-        radius_miles = data.get('radius', 20) # Default to 20
+        radius_miles = data.get('radius', 15) # Default to 15
         
         try:
             radius_miles = float(radius_miles)
         except:
-            radius_miles = 20
+            radius_miles = 15
 
         if user_lat is None or user_lon is None:
             return {"response_text": "Please provide location coordinates.", "match_count": 0, "matches": []}
@@ -116,7 +116,7 @@ def get_answer(data):
                 if any(word in search_blob for word in query_words):
                     final_results.append(m)
 
-        summary = _generate_conversational_summary(question, final_results)
+        summary = _generate_conversational_summary(question, final_results, radius_miles)
         return {"response_text": summary, "match_count": len(final_results), "matches": final_results[:100]}
     except Exception as e:
         traceback.print_exc()
