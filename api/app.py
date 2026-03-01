@@ -139,9 +139,6 @@ def ask():
             'radius': request.args.get('radius')
         }
         result = get_answer(data)
-        # Remove 'response_text' from the dictionary before returning for GET/API
-        if 'response_text' in result:
-            del result['response_text']
         return jsonify(result)
 
 @app.route('/')
