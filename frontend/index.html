@@ -119,7 +119,7 @@
                         
                         let regionHtml = m.region || "";
                         if (m.formatted_address) {
-                            const mapUrl = `https://www.google.com/maps/embed/v1/search?key=AIzaSyBLcCZ0u2PhNlo4zPkNI5QMM8V9REXDI7w&q=${encodeURIComponent(m.formatted_address)}`;
+                            const mapUrl = `https://www.google.com/maps/embed/v1/search?key=YOURKEY&q=${encodeURIComponent(m.formatted_address)}`;
                             regionHtml = `<a class="map-link" href="#" data-url="${mapUrl}">${m.region || "Map"}</a>`;
                         }
                         
