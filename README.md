@@ -19,7 +19,7 @@ Requires:
 
 Background: https://www.longbeachaa.org/matthew-l-naatw-ai-in-aa-new-depth-to-meeting-list-a/
 
-ex: https://ai.lovethecode.cloud:5007/?q=renegades&lat=33.829708&lon=-118.078403&radius=12
+ex: https://ai.lovethecode.cloud:5007/?q=renegades&lat=33.7799&lon=-118.328&radius=12
 
 ex: https://ai.lovethecode.cloud:5012/api/ask?q=meeting&lat=33.7799&lon=-118.328&radius=12
 
