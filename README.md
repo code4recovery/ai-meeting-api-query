@@ -20,3 +20,6 @@ import math
 import time
 import traceback
 from google import genai
+
+
+ex: https://ai.lovethecode.cloud:5012/api/ask?q=meeting&lat=33.7799&lon=-118.328&radius=12
