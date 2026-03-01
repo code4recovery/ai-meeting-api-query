@@ -139,7 +139,7 @@ def ask():
             'radius': request.args.get('radius')
         }
         result = get_answer(data)
-        return jsonify(result)
+        return jsonify(result.get('matches', []))
 
 @app.route('/')
 def serve_widget(): return send_from_directory('../frontend', 'index.html')
