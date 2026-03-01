@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AA Meeting Finder & Schedule</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; max-width: 1000px; margin: 0 auto; background-color: #f4f4f9; color: #333; padding: 1rem; }
+        #widget-container { background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        h2 { text-align: center; color: #5a67d8; margin-top: 0; }
+        .input-wrapper { display: flex; gap: 0.5rem; }
+        input[type="text"] { flex-grow: 1; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; }
+        button { padding: 12px; background-color: #5a67d8; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; }
+        button:hover { background-color: #434190; }
+        a.map-link, a.virtual-link, a.meeting-link { color: #5a67d8; text-decoration: none; cursor: pointer; }
+        a:hover { text-decoration: underline; }
+        #response-container { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #eee; }
+        #status { font-style: italic; color: #555; margin-bottom: 1rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { text-align: left; padding: 12px 8px; border-bottom: 1px solid #ddd; font-size: 14px; }
+        th { background-color: #f9f9f9; }
+        #map-modal-backdrop { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center; }
+        #map-modal-content { background-color: #fff; padding: 10px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); width: 90%; height: 80%; max-width: 900px; position: relative; }
+        #map-modal-close { position: absolute; top: -15px; right: -15px; background: #fff; color: #333; border: 2px solid #333; border-radius: 50%; width: 30px; height: 30px; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; line-height: 1; }
+        #map-iframe { width: 100%; height: 100%; border: none; }
+        @media (max-width: 768px) {
+            td { padding-left: 40% !important; }
+        }
+    </style>
+</head>
+<body>
+    <div id="widget-container">
+        <h2>AA Meeting Finder</h2>
+        <form id="question-form">
+            <div class="input-wrapper"><input type="text" id="question" placeholder="Type to ask (optional)..."></div>
+            <button type="button" id="use-my-location" style="width: 100%; margin-top: 1rem; background-color: #5a67d8;">Search Area from URL</button>
+            <button type="button" id="detect-location" style="width: 100%; margin-top: 0.5rem; background-color: #38a169;">Detect My Current Location</button>
+        </form>
+        <div id="response-container"></div>
+    </div>
+
+    <div id="map-modal-backdrop">
+        <div id="map-modal-content">
+            <button id="map-modal-close">&times;</button>
+            <iframe id="map-iframe" src="" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const questionForm = document.getElementById('question-form');
+            const questionInput = document.getElementById('question');
+            const responseContainer = document.getElementById('response-container');
+            const useMyLocationButton = document.getElementById('use-my-location');
+            const detectLocationButton = document.getElementById('detect-location');
+            const modalBackdrop = document.getElementById('map-modal-backdrop');
+            const modalCloseBtn = document.getElementById('map-modal-close');
+            const mapIframe = document.getElementById('map-iframe');
+
+            async function performSearch(latitude = null, longitude = null) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const question = questionInput.value || urlParams.get('q') || "";
+                const radius = urlParams.get('radius') || 20;
+                
+                const finalLat = latitude !== null ? latitude : urlParams.get('lat');
+                const finalLon = longitude !== null ? longitude : urlParams.get('lon');
+
+                if (!finalLat || !finalLon) {
+                    responseContainer.innerHTML = '<div id="status">Please set ?lat=...&lon=... in the URL.</div>';
+                    return;
+                }
+
+                responseContainer.innerHTML = `<div id="status">Searching area ${finalLat}, ${finalLon} (Radius: ${radius}mi)...</div>`;
+                
+                try {
+                    // Update URL params without reloading if changed via input
+                    if (questionInput.value && questionInput.value !== urlParams.get('q')) {
+                        const url = new URL(window.location);
+                        url.searchParams.set('q', questionInput.value);
+                        window.history.pushState({}, '', url);
+                    }
+
+                    const body = { 
+                        question: question, 
+                        latitude: parseFloat(finalLat), 
+                        longitude: parseFloat(finalLon),
+                        radius: parseFloat(radius)
+                    };
+
+                    const response = await fetch('/api/ask', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(body)
+                    });
+                    
+                    if (!response.ok) throw new Error("Server returned " + response.status);
+                    
+                    const data = await response.json();
+                    renderAskResults(data);
+                } catch (error) {
+                    console.error("Search Error:", error);
+                    responseContainer.innerHTML = `<div id="status">Error: ${error.message}</div>`;
+                }
+            }
+
+            function renderAskResults(data) {
+                let html = `<div id="status" style="background:#eef; padding:10px; border-radius:5px; margin-bottom:10px;">${data.response_text}</div>`;
+                const meetings = data.matches;
+                
+                if (meetings && meetings.length > 0) {
+                    html += '<table><thead><tr><th>Name</th><th>Time</th><th>Day</th><th>Region</th><th>Types</th></tr></thead><tbody>';
+                    const typeMap = {"M": "Men", "W": "Women", "G": "LGBTQ", "S": "Spanish", "BE": "Beginner", "B": "Book", "D": "Discussion", "SP": "Speaker", "ST": "Step", "C": "Closed", "O": "Open", "X": "Accessible"};
+                    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                    
+                    meetings.forEach(m => {
+                        const hasUrl = m.conference_url && String(m.conference_url).startsWith('http');
+                        let nameHtml = `<strong>${m.name}</strong>`;
+                        if (hasUrl) nameHtml += ` <a class="virtual-link" href="${m.conference_url}" target="_blank">(Join)</a>`;
+                        
+                        let regionHtml = m.region || "";
+                        if (m.formatted_address) {
+                            const mapUrl = `https://www.google.com/maps/embed/v1/search?key=AIzaSyBLcCZ0u2PhNlo4zPkNI5QMM8V9REXDI7w&q=${encodeURIComponent(m.formatted_address)}`;
+                            regionHtml = `<a class="map-link" href="#" data-url="${mapUrl}">${m.region || "Map"}</a>`;
+                        }
+                        
+                        let friendlyTypes = "N/A";
+                        if (Array.isArray(m.types)) {
+                            friendlyTypes = m.types.map(t => typeMap[String(t)] || t).join(', ');
+                        }
+                        
+                        html += `<tr>
+                            <td>${nameHtml}</td>
+                            <td>${m.time_formatted || ""}</td>
+                            <td>${daysOfWeek[m.day] || ""}</td>
+                            <td>${regionHtml}</td>
+                            <td>${friendlyTypes}</td>
+                        </tr>`;
+                    });
+                    html += '</tbody></table>';
+                } else {
+                    html += '<p>No results found within 20 miles.</p>';
+                }
+                responseContainer.innerHTML = html;
+            }
+
+            useMyLocationButton.addEventListener('click', performSearch);
+
+            detectLocationButton.addEventListener('click', () => {
+                responseContainer.innerHTML = '<div id="status">Detecting location...</div>';
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const lat = position.coords.latitude.toFixed(6);
+                            const lon = position.coords.longitude.toFixed(6);
+                            const url = new URL(window.location);
+                            url.searchParams.set('lat', lat);
+                            url.searchParams.set('lon', lon);
+                            window.history.pushState({}, '', url);
+                            responseContainer.innerHTML = `<div id="status">Location set to ${lat}, ${lon}. You can now search!</div>`;
+                        },
+                        (err) => {
+                            responseContainer.innerHTML = `<div id="status">Detection error: ${err.message}</div>`;
+                        }
+                    );
+                } else {
+                    responseContainer.innerHTML = '<div id="status">Geolocation not supported.</div>';
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (e.target.closest('.map-link')) {
+                    const link = e.target.closest('.map-link');
+                    e.preventDefault();
+                    mapIframe.src = link.getAttribute('data-url');
+                    modalBackdrop.style.display = 'flex';
+                }
+            });
+
+            modalCloseBtn.addEventListener('click', () => {
+                modalBackdrop.style.display = 'none';
+                mapIframe.src = '';
+            });
+
+            // Initial load check
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('q')) {
+                questionInput.value = urlParams.get('q');
+            }
+            if (urlParams.has('lat') && urlParams.has('lon')) {
+                performSearch();
+            }
+        });
+    </script>
+</body>
+</html>
