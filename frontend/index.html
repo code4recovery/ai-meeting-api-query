@@ -16,16 +16,23 @@
         a:hover { text-decoration: underline; }
         #response-container { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #eee; }
         #status { font-style: italic; color: #555; margin-bottom: 1rem; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { text-align: left; padding: 12px 8px; border-bottom: 1px solid #ddd; font-size: 14px; }
-        th { background-color: #f9f9f9; }
+        /* Card List Layout */
+        .meetings-list { display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
+        .meeting-card { background: #f9f9fb; border-left: 4px solid #5a67d8; padding: 15px; border-radius: 4px; display: flex; flex-direction: column; gap: 10px; }
+        .meeting-info { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+        .meeting-name { font-weight: bold; color: #434190; font-size: 1.1rem; }
+        .meeting-meta { font-size: 0.9rem; color: #4a5568; }
+        .meeting-types { font-size: 0.85rem; color: #718096; background: #edf2f7; padding: 4px 8px; border-radius: 4px; align-self: flex-start; }
+        
+        @media (min-width: 768px) {
+            .meeting-card { flex-direction: row; justify-content: space-between; align-items: center; }
+            .meeting-types { align-self: center; }
+        }
+
         #map-modal-backdrop { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center; }
         #map-modal-content { background-color: #fff; padding: 10px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); width: 90%; height: 80%; max-width: 900px; position: relative; }
         #map-modal-close { position: absolute; top: -15px; right: -15px; background: #fff; color: #333; border: 2px solid #333; border-radius: 50%; width: 30px; height: 30px; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; line-height: 1; }
         #map-iframe { width: 100%; height: 100%; border: none; }
-        @media (max-width: 768px) {
-            td { padding-left: 40% !important; }
-        }
     </style>
 </head>
 <body>
@@ -60,7 +67,7 @@
             async function performSearch(latitude = null, longitude = null) {
                 const urlParams = new URLSearchParams(window.location.search);
                 const question = questionInput.value || urlParams.get('q') || "";
-                const radius = urlParams.get('radius') || 20;
+                const radius = urlParams.get('radius') || 15;
                 
                 const finalLat = latitude !== null ? latitude : urlParams.get('lat');
                 const finalLon = longitude !== null ? longitude : urlParams.get('lon');
@@ -96,54 +103,66 @@
                     if (!response.ok) throw new Error("Server returned " + response.status);
                     
                     const data = await response.json();
-                    renderAskResults(data);
+                    renderAskResults(data, radius);
                 } catch (error) {
                     console.error("Search Error:", error);
                     responseContainer.innerHTML = `<div id="status">Error: ${error.message}</div>`;
                 }
             }
 
-            function renderAskResults(data) {
+            function renderAskResults(data, radius) {
                 let html = `<div id="status" style="background:#eef; padding:10px; border-radius:5px; margin-bottom:10px;">${data.response_text}</div>`;
                 const meetings = data.matches;
                 
                 if (meetings && meetings.length > 0) {
-                    html += '<table><thead><tr><th>Name</th><th>Time</th><th>Day</th><th>Region</th><th>Types</th></tr></thead><tbody>';
+                    html += '<div class="meetings-list">';
                     const typeMap = {"M": "Men", "W": "Women", "G": "LGBTQ", "S": "Spanish", "BE": "Beginner", "B": "Book", "D": "Discussion", "SP": "Speaker", "ST": "Step", "C": "Closed", "O": "Open", "X": "Accessible"};
                     const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
                     
                     meetings.forEach(m => {
                         const hasUrl = m.conference_url && String(m.conference_url).startsWith('http');
-                        let nameHtml = `<strong>${m.name}</strong>`;
+                        let nameHtml = `<span class="meeting-name">${m.name}</span>`;
                         if (hasUrl) nameHtml += ` <a class="virtual-link" href="${m.conference_url}" target="_blank">(Join)</a>`;
                         
                         let regionHtml = m.region || "";
+                        let addressHtml = "";
+                        
                         if (m.formatted_address) {
-                            const mapUrl = `https://www.google.com/maps/embed/v1/search?key=YOURKEY&q=${encodeURIComponent(m.formatted_address)}`;
-                            regionHtml = `<a class="map-link" href="#" data-url="${mapUrl}">${m.region || "Map"}</a>`;
+                            const mapUrl = `https://www.google.com/maps/embed/v1/search?key=AIzaSyBLcCZ0u2PhNlo4zPkNI5QMM8V9REXDI7w&q=${encodeURIComponent(m.formatted_address)}`;
+                            addressHtml = `<div style="margin-top: 4px;"><a class="map-link" href="#" data-url="${mapUrl}" style="font-size: 0.85rem; color: #5a67d8;">📍 ${m.formatted_address}</a></div>`;
                         }
                         
-                        let friendlyTypes = "N/A";
+                        let friendlyTypes = "";
                         if (Array.isArray(m.types)) {
                             friendlyTypes = m.types.map(t => typeMap[String(t)] || t).join(', ');
                         }
                         
-                        html += `<tr>
-                            <td>${nameHtml}</td>
-                            <td>${m.time_formatted || ""}</td>
-                            <td>${daysOfWeek[m.day] || ""}</td>
-                            <td>${regionHtml}</td>
-                            <td>${friendlyTypes}</td>
-                        </tr>`;
+                        const dayString = daysOfWeek[m.day] || "";
+                        const timeString = m.time_formatted || "";
+                        
+                        html += `
+                            <div class="meeting-card">
+                                <div class="meeting-info">
+                                    ${nameHtml}
+                                    <div class="meeting-meta">${dayString} at ${timeString} ${regionHtml ? 'in ' + regionHtml : ''}</div>
+                                    ${addressHtml}
+                                </div>
+                                ${friendlyTypes ? `<div class="meeting-types">${friendlyTypes}</div>` : ''}
+                            </div>`;
                     });
-                    html += '</tbody></table>';
+                    html += '</div>';
                 } else {
-                    html += '<p>No results found within 20 miles.</p>';
+                    html += `<p>No results found within ${radius} miles.</p>`;
                 }
                 responseContainer.innerHTML = html;
             }
 
-            useMyLocationButton.addEventListener('click', performSearch);
+            useMyLocationButton.addEventListener('click', () => performSearch());
+
+            questionForm.addEventListener('submit', (e) => {
+                e.preventDefault(); // Prevent page reload
+                performSearch();
+            });
 
             detectLocationButton.addEventListener('click', () => {
                 responseContainer.innerHTML = '<div id="status">Detecting location...</div>';
@@ -155,6 +174,9 @@
                             const url = new URL(window.location);
                             url.searchParams.set('lat', lat);
                             url.searchParams.set('lon', lon);
+                            if (!url.searchParams.has('radius')) {
+                                url.searchParams.set('radius', 15);
+                            }
                             window.history.pushState({}, '', url);
                             responseContainer.innerHTML = `<div id="status">Location set to ${lat}, ${lon}. You can now search!</div>`;
                         },
