@@ -2,9 +2,9 @@
 Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries, and API queries to produce json output & meeting query results to get query requests of keyword, lat, lon, and radius.
 
 ## Requires:
-* linux webserver
-* python3
-* gemini API Key
+* Linux webserver
+* Python3
+* Gemini API Key
 * Google Maps API Key
 * meetings.json or national-meetings.json
 * python dependencies: numpy as np flask  Flask, request, jsonify, send_from_directory flask_cors CORS json re os math time traceback google genai
