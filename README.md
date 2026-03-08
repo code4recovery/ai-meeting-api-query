@@ -27,8 +27,8 @@ Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries,
 ## JSON Schema Spec for AI Meeting Data Processing and Validation
 ```{
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Meeting Directory",
-  "description": "A comprehensive schema for validating a collection of recovery-style meetings.",
+  "title": "Meeting Schema Object",
+  "description": "A comprehensive schema for validating a collection of tsml json formatted meetings.",
   "type": "array",
   "items": {
     "type": "object",
