@@ -25,7 +25,8 @@ Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries,
 * https://ai.lovethecode.cloud:5012/api/ask?q=meeting&lat=33.7799&lon=-118.328&radius=12
 
 ## JSON Schema Spec for AI Meeting Data Processing and Validation
-```{
+```
+{
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Meeting Schema Object",
   "description": "A comprehensive schema for validating a collection of tsml json formatted meetings.",
@@ -160,4 +161,5 @@ Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries,
       }
     }
   }
-}```
+}
+```
