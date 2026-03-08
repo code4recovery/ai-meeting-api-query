@@ -72,6 +72,20 @@ Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries,
         "pattern": "^([01]\\d|2[0-3]):([0-5]\\d)$",
         "description": "24-hour end time HH:MM."
       },
+      "conference_url": {
+        "type": "string",
+        "format": "uri",
+        "description": "The link for online meetings (e.g., Zoom, Google Meet)."
+      },
+      "conference_phone": {
+        "type": "string",
+        "pattern": "^\\+?\\d{10,15}$",
+        "description": "Dial-in phone number for the meeting, digits only."
+      },
+      "conference_url_notes": {
+        "type": "string",
+        "description": "Passwords, Meeting IDs, or specific login instructions."
+      },
       "latitude": {
         "type": "number",
         "minimum": -90,
