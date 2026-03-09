@@ -29,6 +29,8 @@ Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries,
 * create: vectorstore at google after upload
 * output: console text for each matched meeting, meeting json written to file
 
+![Meeting Query AI Summaries in Morro Bay](aiaameetings.png)
+
 ## JSON Schema Spec for AI Meeting Data Processing and Validation
 ```
 {
