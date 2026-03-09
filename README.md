@@ -24,7 +24,9 @@ Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries,
 * https://ai.lovethecode.cloud:5007/?q=renegades&lat=33.7799&lon=-118.328&radius=12
 * https://ai.lovethecode.cloud:5012/api/ask?q=meeting&lat=33.7799&lon=-118.328&radius=12
 
-## AI Formatted TSML JSON Meeting Query shell file
+## Other Prototypes to Demonstrate Features
+
+### AI Formatted TSML JSON Meeting Query shell file
 * input: meetings.json, optionally filter by geography or keyword
 * query: pass day filtered or other filtered meeting json to AI for Formatted output
 * output: console AI Formatted text for each matched meeting, meeting json written to file
@@ -32,7 +34,7 @@ Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries,
 ![Meeting Query AI Summaries in Morro Bay](aiaameetings.png)
 * custom fields (lat & lon) inserted into query at Step 2 for loop in shell file.
 
-## JSON Schema Spec for AI Meeting Data Processing and Validation
+### JSON Schema Spec for AI Meeting Data Processing and Validation
 ```
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
