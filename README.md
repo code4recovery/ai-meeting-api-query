@@ -16,6 +16,7 @@ Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries,
 1. replace DOMAIN with live domain in ensure_running.sh 
 2. replace KEY with Google Maps API Key in frontend/index.html
 3. create .env file with Gemini API Key
+4. or, run Query Shell file below, after putting in Gemini API Key
 
 ## Background:
 * https://www.longbeachaa.org/matthew-l-naatw-ai-in-aa-new-depth-to-meeting-list-a/
