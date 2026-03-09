@@ -30,6 +30,7 @@ Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries,
 * output: console AI Formatted text for each matched meeting, meeting json written to file
 
 ![Meeting Query AI Summaries in Morro Bay](aiaameetings.png)
+* custom fields (lat & lon) iserted into query at Step 2 for loop in shell file.
 
 ## JSON Schema Spec for AI Meeting Data Processing and Validation
 ```
