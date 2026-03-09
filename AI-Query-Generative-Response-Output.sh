@@ -67,4 +67,4 @@ echo "----------------------------------------------"
 echo "Done! All data saved to $OUTPUT_FILE"
 
 # Cleanup
-rm -f payload.json#!/bin/bash
+rm -f payload.json
