@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<!-- saved from url=(0030)https://ragmg.matthews.help/ui -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AA Meetings Finder</title>
+<meta name="theme-color" content="#000000">
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./AA Meetings Finder_files/css2" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#0A0C0A;--black2:#111411;--black3:#181C18;--black4:#1E231E;
+  --green:#1DB954;--green-dim:#145E32;--green-lt:#0D2B1A;
+  --grey:#3A3F3A;--muted:#5A6B5A;--text:#C8D8C8;--text-dim:#7A8B7A;
+  --border:#232923;--white:#E8F0E8;
+}
+html,body{height:100%;background:var(--black);color:var(--text);font-family:'Syne',sans-serif}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);pointer-events:none;z-index:1000}
+.shell{min-height:100vh;display:grid;grid-template-rows:auto 1fr auto}
+header{background:var(--black2);border-bottom:1px solid var(--border);padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden}
+header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
+.header-left{display:flex;align-items:center;gap:1rem}
+.logo-mark{width:32px;height:32px;border:2px solid var(--green);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:.7rem;font-weight:700;color:var(--green);letter-spacing:-.05em;flex-shrink:0}
+header h1{font-size:1rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--white)}
+.header-badge{font-family:'Space Mono',monospace;font-size:.6rem;color:var(--green);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--green-dim);background:var(--green-lt);padding:.2rem .6rem;border-radius:2px}
+main{display:grid;grid-template-columns:360px 1fr;height:calc(100vh - 100px)}
+@media(max-width:768px){main{grid-template-columns:1fr;height:auto}.results-panel{min-height:60vh}}
+.query-panel{background:var(--black2);border-right:1px solid var(--border);padding:1.5rem;display:flex;flex-direction:column;gap:1.25rem;overflow-y:auto}
+.query-panel::-webkit-scrollbar{width:4px}.query-panel::-webkit-scrollbar-track{background:var(--black2)}.query-panel::-webkit-scrollbar-thumb{background:var(--grey);border-radius:2px}
+.field-label{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+.field-label::after{content:'';flex:1;height:1px;background:var(--border)}
+textarea{width:100%;min-height:110px;background:var(--black3);border:1px solid var(--border);border-radius:4px;padding:.85rem 1rem;font-family:'Space Mono',monospace;font-size:.8rem;color:var(--white);resize:vertical;transition:border-color .2s,box-shadow .2s;line-height:1.6;caret-color:var(--green)}
+textarea:focus{outline:none;border-color:var(--green-dim);box-shadow:0 0 0 1px var(--green-dim),0 0 20px rgba(29,185,84,.05)}
+textarea::placeholder{color:var(--muted)}
+.suggestions{display:flex;flex-direction:column;gap:.4rem}
+.suggestion{background:var(--black3);border:1px solid var(--border);border-radius:4px;padding:.5rem .75rem;font-family:'Space Mono',monospace;font-size:.72rem;color:var(--text-dim);cursor:pointer;transition:all .15s;text-align:left;line-height:1.5;display:flex;align-items:flex-start;gap:.5rem}
+.suggestion::before{content:'›';color:var(--green);flex-shrink:0;margin-top:.05em}
+.suggestion:hover{background:var(--green-lt);border-color:var(--green-dim);color:var(--green)}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.filter-group{display:flex;flex-direction:column;gap:.4rem}
+.filter-group.full{grid-column:1/-1}
+select,input[type=text]{background:var(--black3);border:1px solid var(--border);border-radius:4px;padding:.5rem .7rem;font-family:'Space Mono',monospace;font-size:.75rem;color:var(--text);transition:border-color .2s;width:100%;appearance:none}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%235A6B5A'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .7rem center;padding-right:2rem}
+select:focus,input[type=text]:focus{outline:none;border-color:var(--green-dim)}
+select option{background:var(--black3)}
+input::placeholder{color:var(--muted)}
+button.submit{background:var(--green);color:var(--black);border:none;border-radius:4px;padding:.85rem;font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;position:relative;overflow:hidden}
+button.submit::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.1) 0%,transparent 60%)}
+button.submit:hover{background:#22d45f;box-shadow:0 0 20px rgba(29,185,84,.3)}
+button.submit:active{transform:scale(.98)}
+button.submit:disabled{background:var(--grey);cursor:not-allowed;box-shadow:none;color:var(--muted)}
+.spinner{width:14px;height:14px;border:2px solid rgba(0,0,0,.2);border-top-color:var(--black);border-radius:50%;animation:spin .6s linear infinite;display:none}
+.loading .spinner{display:block}.loading .btn-text{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.results-panel{background:var(--black);overflow-y:auto;display:flex;flex-direction:column}
+.results-panel::-webkit-scrollbar{width:4px}.results-panel::-webkit-scrollbar-track{background:var(--black)}.results-panel::-webkit-scrollbar-thumb{background:var(--grey);border-radius:2px}
+.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;padding:3rem;text-align:center}
+.empty-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;width:120px;height:120px;opacity:.15}
+.empty-grid div{background:var(--green);animation:pulse-cell 2s ease-in-out infinite}
+.empty-grid div:nth-child(2){animation-delay:.2s}.empty-grid div:nth-child(3){animation-delay:.4s}.empty-grid div:nth-child(5){animation-delay:.6s}.empty-grid div:nth-child(7){animation-delay:.8s}.empty-grid div:nth-child(9){animation-delay:1s}
+@keyframes pulse-cell{0%,100%{opacity:.3}50%{opacity:1}}
+.empty-state h2{font-size:1.1rem;font-weight:700;color:var(--text-dim);letter-spacing:.05em}
+.empty-state p{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--muted);max-width:260px;line-height:1.7}
+.answer-block{border-bottom:1px solid var(--border);padding:1.75rem 2rem;background:var(--black2);position:relative;overflow:hidden}
+.answer-block::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--green),var(--green-dim))}
+.answer-label{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:.85rem}
+.answer-text{font-size:.92rem;line-height:1.8;color:var(--white);font-weight:400}
+.answer-meta{margin-top:1rem;font-family:'Space Mono',monospace;font-size:.62rem;color:var(--muted);display:flex;align-items:center;gap:.75rem}
+.dot{width:5px;height:5px;background:var(--green);border-radius:50%;display:inline-block}
+.meetings-section{padding:1.5rem 2rem;flex:1}
+.meetings-label{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;display:flex;align-items:center;gap:.75rem}
+.meetings-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.meetings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:.85rem}
+.meeting-card{background:var(--black2);border:1px solid var(--border);border-radius:6px;padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.55rem;transition:border-color .2s,box-shadow .2s,transform .2s;animation:fadeUp .4s ease both;position:relative;overflow:hidden}
+.meeting-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green-dim),transparent);opacity:0;transition:opacity .2s}
+.meeting-card:hover{border-color:var(--green-dim);box-shadow:0 0 24px rgba(29,185,84,.07);transform:translateY(-2px)}
+.meeting-card:hover::before{opacity:1}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.card-num{position:absolute;top:.7rem;right:.9rem;font-family:'Space Mono',monospace;font-size:.6rem;color:var(--muted)}
+.card-name{font-size:.92rem;font-weight:700;color:var(--white);letter-spacing:.02em;line-height:1.3;padding-right:1.5rem}
+.card-row{display:flex;align-items:flex-start;gap:.5rem;font-family:'Space Mono',monospace;font-size:.72rem;color:var(--text-dim);line-height:1.4}
+.card-icon{color:var(--green);flex-shrink:0;margin-top:.1em;font-size:.75rem}
+.card-types{display:flex;flex-wrap:wrap;gap:.3rem}
+.type-tag{background:var(--black3);border:1px solid var(--border);border-radius:2px;padding:.12rem .4rem;font-family:'Space Mono',monospace;font-size:.6rem;color:var(--green);letter-spacing:.04em;transition:all .15s}
+.type-tag:hover{background:var(--green-lt);border-color:var(--green-dim)}
+.card-notes{font-family:'Space Mono',monospace;font-size:.68rem;color:var(--muted);font-style:italic;line-height:1.6;border-top:1px solid var(--border);padding-top:.5rem;margin-top:.1rem}
+.card-link a{color:var(--green);font-family:'Space Mono',monospace;font-size:.68rem;text-decoration:none;word-break:break-all;transition:color .15s}
+.card-link a:hover{color:#22d45f;text-decoration:underline}
+.score-wrap{margin-top:auto;padding-top:.4rem;display:flex;align-items:center;gap:.5rem}
+.score-track{flex:1;height:2px;background:var(--black3);border-radius:1px;overflow:hidden}
+.score-fill{height:100%;background:var(--green);border-radius:1px;box-shadow:0 0 6px rgba(29,185,84,.5);transition:width .8s cubic-bezier(.4,0,.2,1)}
+.score-pct{font-family:'Space Mono',monospace;font-size:.6rem;color:var(--green);min-width:2.5rem;text-align:right}
+.error-block{margin:2rem;padding:1rem 1.25rem;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:4px;color:#f87171;font-family:'Space Mono',monospace;font-size:.75rem;line-height:1.6}
+footer{background:var(--black2);border-top:1px solid var(--border);height:40px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;font-family:'Space Mono',monospace;font-size:.6rem;color:var(--muted);letter-spacing:.06em}
+.footer-status{display:flex;align-items:center;gap:.4rem;color:var(--green)}
+.status-dot{width:5px;height:5px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header>
+    <div class="header-left">
+      <div class="logo-mark">AA</div>
+      <h1>Meetings Finder</h1>
+    </div>
+    <span class="header-badge">Gemini + MongoDB</span>
+  </header>
+
+  <main>
+    <aside class="query-panel">
+      <div>
+        <div class="field-label">Query</div>
+        <textarea id="question" placeholder="Ask anything about AA meetings…
+
+e.g. Big Book meetings Tuesday evening Long Beach"></textarea>
+      </div>
+      <div>
+        <div class="field-label">Examples</div>
+        <div class="suggestions">
+          <button class="suggestion" onclick="suggest(this)">What meetings are available in Seal Beach?</button>
+          <button class="suggestion" onclick="suggest(this)">Big Book meetings on Tuesday evenings in Long Beach</button>
+          <button class="suggestion" onclick="suggest(this)">Women-only meetings on weekends</button>
+          <button class="suggestion" onclick="suggest(this)">Online meetings Friday mornings</button>
+          <button class="suggestion" onclick="suggest(this)">Open discussion meetings Monday near Torrance</button>
+        </div>
+      </div>
+      <div>
+        <div class="field-label">Filters</div>
+        <div class="filters">
+          <div class="filter-group">
+            <div class="field-label" style="font-size:.55rem">Day</div>
+            <select id="day">
+              <option value="">Any</option>
+              <option>Sunday</option><option>Monday</option><option>Tuesday</option>
+              <option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <div class="field-label" style="font-size:.55rem">Attendance</div>
+            <select id="attendance">
+              <option value="">Any</option>
+              <option value="in_person">In Person</option>
+              <option value="online">Online</option>
+              <option value="hybrid">Hybrid</option>
+            </select>
+          </div>
+          <div class="filter-group full">
+            <div class="field-label" style="font-size:.55rem">Region</div>
+            <input type="text" id="region" placeholder="e.g. LONG BEACH">
+          </div>
+          <div class="filter-group full">
+            <div class="field-label" style="font-size:.55rem">Results</div>
+            <select id="top_k">
+              <option value="5">5 meetings</option>
+              <option value="8" selected="">8 meetings</option>
+              <option value="12">12 meetings</option>
+              <option value="20">20 meetings</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <button class="submit" id="submitBtn" onclick="doQuery()">
+        <div class="spinner"></div>
+        <span class="btn-text">Find Meetings</span>
+      </button>
+    </aside>
+
+    <section class="results-panel" id="resultsPanel">
+      <div class="empty-state">
+        <div class="empty-grid">
+          <div></div><div></div><div></div>
+          <div></div><div></div><div></div>
+          <div></div><div></div><div></div>
+        </div>
+        <h2>Ready to search</h2>
+        <p>Ask a question or pick an example to find AA meetings in your area.</p>
+        <p style="margin-top:.5rem">Press <kbd style="background:var(--black3);border:1px solid var(--border);border-radius:3px;padding:.1rem .4rem;font-family:&#39;Space Mono&#39;,monospace;font-size:.65rem">Ctrl+Enter</kbd> to submit</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>AA Meetings · TSML · Code4Recovery</span>
+    <span class="footer-status"><span class="status-dot"></span> API online</span>
+  </footer>
+</div>
+<script>
+const API='https://ragmg.matthews.help';
+const DAY_NAMES=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const TYPE_LABELS={'12x12':'12 Steps & 12 Traditions','1HR':'1 Hour','A':'Atheist/Agnostic','ABSI':'As Bill Sees It','ASL':'Sign Language','B':'Beginners','BE':'Newcomer','BS':'Book Study','C':'Closed','CAN':'Candlelight','CF':'Child Friendly','D':'Discussion','DR':'Daily Reflections','EN':'Español','InP':'In Person','LGBTQ':'LGBTQ+','LIT':'Literature','LS':'Living Sober','M':'Men','MED':'Meditation','NB':'Non-Binary','O':'Open','ONL':'Online','Part':'Participation','QA':'Q&A','S':'Spanish','SEN':'Seniors','SP':'Speaker','SS':'Step Study','ST':'Step','T':'Traditions','TC':'Temp Closed','VM':'Virtual','W':'Women','X':'Open to All','XT':'Open to All+','Y':'Young People'};
+
+function suggest(el){document.getElementById('question').value=el.textContent.trim();doQuery()}
+
+function setLoading(on){const b=document.getElementById('submitBtn');b.disabled=on;b.classList.toggle('loading',on)}
+
+async function doQuery(){
+  const q=document.getElementById('question').value.trim();
+  if(!q){document.getElementById('question').focus();return}
+  setLoading(true);
+  const body={question:q,top_k:parseInt(document.getElementById('top_k').value)};
+  const f={};
+  const day=document.getElementById('day').value;
+  const att=document.getElementById('attendance').value;
+  const region=document.getElementById('region').value.trim().toUpperCase();
+  if(day)f.day=day;if(att)f.attendance_option=att;if(region)f.region=region;
+  if(Object.keys(f).length)body.filters=f;
+  try{
+    const res=await fetch(`${API}/query`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(!res.ok)throw new Error(`${res.status}: ${await res.text()}`);
+    renderResults(await res.json());
+  }catch(e){renderError(e.message)}finally{setLoading(false)}
+}
+
+function renderResults(data){
+  const meetings=data.meetings_cited||data.meetings||[];
+  let html=`<div class="answer-block"><div class="answer-label">// answer</div><div class="answer-text">${escHtml(data.answer)}</div><div class="answer-meta"><span><span class="dot"></span>${meetings.length} meeting${meetings.length!==1?'s':''} referenced</span></div></div>`;
+  if(meetings.length)html+=`<div class="meetings-section"><div class="meetings-label">Referenced meetings (${meetings.length})</div><div class="meetings-grid">${meetings.map((m,i)=>renderCard(m,i)).join('')}</div></div>`;
+  document.getElementById('resultsPanel').innerHTML=html;
+}
+
+function renderCard(m,i){
+  const day=m.day_text||(m.day!==undefined?DAY_NAMES[m.day]:'');
+  const time=m.time_formatted||m.time||'';
+  const dayTime=[day,time].filter(Boolean).join(' · ');
+  const loc=m.location||'';const addr=m.formatted_address||'';
+  const types=Array.isArray(m.types)?m.types:[];
+  const score=m.score??null;const notes=(m.notes||'').trim();
+  const url=m.conference_url||m.url||'';
+  return `<div class="meeting-card" style="animation-delay:${i*.05}s">
+    <div class="card-num">#${i+1}</div>
+    <div class="card-name">${escHtml(m.name||'Unknown')}</div>
+    ${dayTime?`<div class="card-row"><span class="card-icon">◷</span>${escHtml(dayTime)}</div>`:''}
+    ${loc?`<div class="card-row"><span class="card-icon">⌖</span>${escHtml(loc)}</div>`:''}
+    ${addr&&addr!==loc?`<div class="card-row"><span class="card-icon">↳</span>${escHtml(addr)}</div>`:''}
+    ${m.region?`<div class="card-row"><span class="card-icon">◈</span>${escHtml(m.region)}</div>`:''}
+    ${m.attendance_option?`<div class="card-row"><span class="card-icon">◉</span>${escHtml(m.attendance_option.replace(/_/g,' '))}</div>`:''}
+    ${types.length?`<div class="card-types">${types.map(t=>`<span class="type-tag" title="${escHtml(TYPE_LABELS[t]||t)}">${escHtml(t)}</span>`).join('')}</div>`:''}
+    ${notes?`<div class="card-notes">${escHtml(notes.slice(0,150))}${notes.length>150?'…':''}</div>`:''}
+    ${url?`<div class="card-row card-link"><span class="card-icon">⇗</span><a href="${escHtml(url)}" target="_blank" rel="noopener">${escHtml(url.replace(/^https?:\/\//,'').slice(0,40))}</a></div>`:''}
+    ${score!=null?`<div class="score-wrap"><div class="score-track"><div class="score-fill" style="width:${Math.round(score*100)}%"></div></div><div class="score-pct">${(score*100).toFixed(0)}%</div></div>`:''}
+  </div>`;
+}
+
+function renderError(msg){document.getElementById('resultsPanel').innerHTML=`<div class="error-block">// error<br>${escHtml(msg)}</div>`}
+
+function escHtml(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter')doQuery()});
+</script>
+
+
+</body></html>
