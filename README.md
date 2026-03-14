@@ -35,7 +35,7 @@ Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries,
 ### B. Python3/MongoDB/Gemini AI/Nginx
 HTML5/CSS3/JavaScript client file accesses API for Interactive Queries of Meetings.
 
-![Meeting Query AI Chat Summarizes](aiaameetingschat.png)
+![Meeting Query AI Chat Summarizes](aameetingschat.png)
 
 ### C. JSON Schema Spec for AI Meeting Data Processing and Validation
 ```
