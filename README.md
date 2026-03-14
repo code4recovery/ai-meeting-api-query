@@ -34,6 +34,7 @@ Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries,
 
 ### B. Python3 API Server/MongoDB TSML JSON/Gemini AI/Nginx
 * HTML5/CSS3/JavaScript client file (aa-ai-meeting-finder-chat.html) accesses API for Interactive Queries of Meetings.
+* RAG from VectorStorage is utiized for Faster AI Query responses in updated Python3 API, To Be Released.
 
 ![Meeting Query AI Chat Summarizes](aameetingschat.png)
 
