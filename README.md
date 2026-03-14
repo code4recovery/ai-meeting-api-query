@@ -16,7 +16,7 @@ Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries,
 1. replace DOMAIN with live domain in ensure_running.sh 
 2. replace KEY with Google Maps API Key in frontend/index.html
 3. create .env file with Gemini API Key
-4. or, run Query Shell file below, after putting in Gemini API Key
+4. or, run API Server, Configure aa-ai-meeting-finder-chat.html for Meeting Results
 
 ## Background:
 * https://www.longbeachaa.org/matthew-l-naatw-ai-in-aa-new-depth-to-meeting-list-a/
@@ -28,18 +28,13 @@ Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries,
 
 ## Other Prototypes to Demonstrate Features
 
-### A. AI Formatted TSML JSON Meeting Query shell file
-* input: meetings.json, optionally filter by geography or keyword
-* query: pass day filtered or other filtered meeting json to AI for Formatted output
-* output: console AI Formatted text for each matched meeting, meeting json written to file
-
-### B. Python3 API Server/MongoDB TSML JSON/Gemini AI/Nginx Integrated Meeting Finder
+### A. Python3 API Server/MongoDB TSML JSON/Gemini AI/Nginx Integrated Meeting Finder
 * HTML5/CSS3/JavaScript client file (aa-ai-meeting-finder-chat.html) accesses API for Interactive Queries of Meetings.
 * RAG from VectorStorage is utiized for Faster AI Query responses in updated Python3 API, To Be Released.
 
 ![Meeting Query AI Chat Summarizes](aameetingschat.png)
 
-### C. JSON Schema Spec for AI Meeting Data Processing and Validation
+### B. JSON Schema Spec for AI Meeting Data Processing and Validation
 ```
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
