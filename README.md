@@ -22,9 +22,9 @@ Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries,
 * https://www.longbeachaa.org/matthew-l-naatw-ai-in-aa-new-depth-to-meeting-list-a/
 
 ## Examples:
-* https://ragpg.matthews.help/ui
-* https://ragpg.matthews.help/docs
-* https://ragpg.matthews.help/health
+* https://ragmg.matthews.help/ui
+* https://ragmg.matthews.help/docs
+* https://ragmg.matthews.help/health
 * https://ai.lovethecode.cloud:5007/?q=renegades&lat=33.7799&lon=-118.328&radius=12
 * https://ai.lovethecode.cloud:5012/api/ask?q=meeting&lat=33.7799&lon=-118.328&radius=12
 
