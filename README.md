@@ -36,7 +36,6 @@ Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries,
 HTML5/CSS3/JavaScript client file accesses API for Interactive Queries of Meetings.
 
 ![Meeting Query AI Chat Summarizes](aiaameetingschat.png)
-* custom fields (lat & lon) inserted into query at Step 2 for loop in shell file.
 
 ### C. JSON Schema Spec for AI Meeting Data Processing and Validation
 ```
