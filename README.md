@@ -27,15 +27,18 @@ Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries,
 
 ## Other Prototypes to Demonstrate Features
 
-### AI Formatted TSML JSON Meeting Query shell file
+### A. AI Formatted TSML JSON Meeting Query shell file
 * input: meetings.json, optionally filter by geography or keyword
 * query: pass day filtered or other filtered meeting json to AI for Formatted output
 * output: console AI Formatted text for each matched meeting, meeting json written to file
 
-![Meeting Query AI Summaries in Morro Bay](aiaameetings.png)
+### B. Python3/MongoDB/Gemini AI/Nginx
+HTML5/CSS3/JavaScript client file accesses API for Interactive Queries of Meetings.
+
+![Meeting Query AI Chat Summarizes](aiaameetingschat.png)
 * custom fields (lat & lon) inserted into query at Step 2 for loop in shell file.
 
-### JSON Schema Spec for AI Meeting Data Processing and Validation
+### C. JSON Schema Spec for AI Meeting Data Processing and Validation
 ```
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
