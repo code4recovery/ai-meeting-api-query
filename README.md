@@ -1,8 +1,8 @@
 # ai-meeting-api-query
 Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries, and API queries to produce json output & meeting query results to get query requests of keyword, lat, lon, and radius.
-╔══════════════════════════════════════════════╗  
-║    - AA Meetings Finder — Powered by AI -    ║  
-╚══════════════════════════════════════════════╝  
+╔════════════════════════════════════════╗  
+║ - AA Meetings Finder — Powered by AI - ║  
+╚════════════════════════════════════════╝  
 
 ## Requires
 * Linux webserver
