@@ -2,15 +2,15 @@
 Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries, and API queries to produce json output & meeting query results to get query requests of keyword, lat, lon, and radius.  
 
 ## Requires
-* Linux webserver or Widows Server, also tested on Windows Desktops
+* Linux webserver, Widows Server, also tested on Windows Desktop
 * Python3
 * Gemini API Key
-* meetings.json or national-meetings.json
-* python dependencies: pip install -r requirements.txt
 
 ## QuickStart
 1. place in .env file your Gemini API Key
-2. run API Server, Configure aa-ai-meeting-finder-chat.html for Meeting Results
+2. pip install -r requirements.txt
+3. python service.py install #Installs as Windows Service for JSON responses from 127.0.0.1
+4. python service.py start #Verify with curl -UseBasicParsing "http://127.0.0.1:8000/health"
 
 ## Background:
 * https://www.longbeachaa.org/matthew-l-naatw-ai-in-aa-new-depth-to-meeting-list-a/
