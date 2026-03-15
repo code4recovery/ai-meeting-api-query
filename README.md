@@ -6,7 +6,7 @@ Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries,
 * Python3
 * Gemini API Key
 * meetings.json or national-meetings.json
-* python dependencies: numpy as np flask  Flask, request, jsonify, send_from_directory flask_cors CORS json re os math time traceback google genai
+* python dependencies: pip install -r requirements.txt
 
 ## QuickStart
 1. place in .env file your Gemini API Key
