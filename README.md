@@ -18,6 +18,7 @@ Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries,
 
 ## Examples:
 * https://ragmg.matthews.help/ui
+* https://ragmg.matthews.help/docs
 * https://ragmg.matthews.help/health
 
 ![Meeting Query AI Chat Summarizes](aameetingschat.png)
