@@ -11,6 +11,7 @@ Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries,
 2. pip install -r requirements.txt
 3. python service.py install #Installs as Windows Service for JSON responses from 127.0.0.1
 4. python service.py start #Verify with curl -UseBasicParsing "http://127.0.0.1:8000/health"
+5. query with $request = Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8000/query" ` -ContentType "application/json" ` -Body '{"question": "What meetings are available in Seal Beach?"}'; $request.answer;
 
 ## Background:
 * https://www.longbeachaa.org/matthew-l-naatw-ai-in-aa-new-depth-to-meeting-list-a/
