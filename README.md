@@ -14,6 +14,7 @@ Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries,
 5. query with $request = Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8000/query" ` -ContentType "application/json" ` -Body '{"question": "What meetings are available in Seal Beach?"}'; $request.answer;
 
 ![Meeting Query AI Chat Summarizes](successful-service.png)
+* Successful Install as Service
 
 ## Background:
 * https://www.longbeachaa.org/matthew-l-naatw-ai-in-aa-new-depth-to-meeting-list-a/
