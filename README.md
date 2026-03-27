@@ -15,7 +15,7 @@ Python3 app able to utilize AI for Generrative 12 Step Conversational Summaries,
 
 ![Meeting Query AI Chat Summarizes](successful-service.png)
 * Successful Install as Service
-![Windows Services on Command Line](API-CMD.png)
+![Windows Services on Command Line](api-cmd.png)
 * Managing Service through command line
 
 ## Background:
